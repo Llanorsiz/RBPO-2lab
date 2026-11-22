@@ -21,6 +21,11 @@ public class ReleaseController {
         return releaseService.getReleases();
     }
 
+    @GetMapping("/{releaseId}")
+    public ReleaseResponse getRelease(@PathVariable Long releaseId){
+        return releaseService.getRelease(releaseId);
+    }
+
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
     public ReleaseResponse createRelease(@RequestBody CreateReleaseRequest request) {

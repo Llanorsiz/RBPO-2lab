@@ -1,11 +1,14 @@
 package kurban.softwareProducts.developmentTask.service;
 
+import kurban.softwareProducts.developmentTask.exception.DevelopmentTaskNotFoundException;
 import kurban.softwareProducts.developmentTask.mapper.DevelopmentTaskMapper;
 import kurban.softwareProducts.developmentTask.model.DevelopmentTask;
 import kurban.softwareProducts.developmentTask.repository.DevelopmentTaskRepository;
 import kurban.softwareProducts.developmentTask.web.request.CreateDevelopmentTaskRequest;
 import kurban.softwareProducts.developmentTask.web.request.UpdateDevelopmentTaskRequest;
 import kurban.softwareProducts.developmentTask.web.response.DevelopmentTaskResponse;
+import kurban.softwareProducts.user.exception.UserNotFoundException;
+import kurban.softwareProducts.user.web.response.UserResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,6 +29,12 @@ public class DevelopmentTaskService {
                 .toList();
     }
 
+    public DevelopmentTaskResponse getDevelopmentTask(Long developmentTaskId){
+        return developmentTaskRepository.findById(developmentTaskId)
+                .map(developmentTaskMapper::toDevelopmentTaskResponse)
+                .orElseThrow(DevelopmentTaskNotFoundException::new);
+    }
+
     @Transactional
     public DevelopmentTaskResponse createDevelopmentTask(CreateDevelopmentTaskRequest request) {
         DevelopmentTask developmentTask = developmentTaskMapper.fromCreateDevelopmentTaskRequest(request);
@@ -35,7 +44,8 @@ public class DevelopmentTaskService {
 
     @Transactional
     public DevelopmentTaskResponse updateDevelopmentTask(Long developmentTaskId, UpdateDevelopmentTaskRequest request) {
-        DevelopmentTask developmentTask = developmentTaskRepository.findById(developmentTaskId).get();
+        DevelopmentTask developmentTask = developmentTaskRepository.findById(developmentTaskId)
+                .orElseThrow(DevelopmentTaskNotFoundException::new);
         developmentTaskMapper.updateFromUpdateDevelopmentTaskRequest(request, developmentTask);
         return developmentTaskMapper.toDevelopmentTaskResponse(developmentTask);
     }

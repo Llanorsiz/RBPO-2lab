@@ -2,6 +2,7 @@ package kurban.softwareProducts.user.service;
 
 import kurban.softwareProducts.developmentTask.repository.DevelopmentTaskRepository;
 import kurban.softwareProducts.softwareProduct.repository.SoftwareProductRepository;
+import kurban.softwareProducts.user.exception.UserNotFoundException;
 import kurban.softwareProducts.user.mapper.UserMapper;
 import kurban.softwareProducts.user.model.User;
 import kurban.softwareProducts.user.repository.UserRepository;
@@ -32,6 +33,12 @@ public class UserService {
                 .toList();
     }
 
+    public UserResponse getUser(Long userId){
+        return userRepository.findById(userId)
+                .map(userMapper::toUserResponse)
+                .orElseThrow(UserNotFoundException::new);
+    }
+
     @Transactional
     public UserResponse createUser(CreateUserRequest request) {
         User user = userMapper.fromCreateUserRequest(request);
@@ -41,7 +48,8 @@ public class UserService {
 
     @Transactional
     public UserResponse updateUser(Long userId, UpdateUserRequest request) {
-        User user = userRepository.findById(userId).get();
+        User user = userRepository.findById(userId)
+                .orElseThrow(UserNotFoundException::new);
         userMapper.updateFromUpdateUserRequest(request, user);
         return userMapper.toUserResponse(user);
     }

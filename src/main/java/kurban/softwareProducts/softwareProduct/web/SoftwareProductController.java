@@ -1,5 +1,6 @@
 package kurban.softwareProducts.softwareProduct.web;
 
+import kurban.softwareProducts.release.web.response.ReleaseResponse;
 import kurban.softwareProducts.softwareProduct.service.SoftwareProductService;
 import kurban.softwareProducts.softwareProduct.web.request.CreateSoftwareProductRequest;
 import kurban.softwareProducts.softwareProduct.web.request.UpdateSoftwareProductRequest;
@@ -19,6 +20,11 @@ public class SoftwareProductController {
     @GetMapping
     public List<SoftwareProductResponse> getSoftwareProducts() {
         return softwareProductService.getSoftwareProducts();
+    }
+
+    @GetMapping("/{softwareProductId}")
+    public SoftwareProductResponse getSoftwareProduct(@PathVariable Long softwareProductId){
+        return softwareProductService.getSoftwareProducts(softwareProductId);
     }
 
     @ResponseStatus(HttpStatus.CREATED)

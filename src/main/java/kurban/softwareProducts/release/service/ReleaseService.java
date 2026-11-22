@@ -1,6 +1,7 @@
 package kurban.softwareProducts.release.service;
 
 import kurban.softwareProducts.developmentTask.repository.DevelopmentTaskRepository;
+import kurban.softwareProducts.release.exception.ReleaseNotFoundException;
 import kurban.softwareProducts.release.mapper.ReleaseMapper;
 import kurban.softwareProducts.release.model.Release;
 import kurban.softwareProducts.release.repository.ReleaseRepository;
@@ -9,6 +10,7 @@ import kurban.softwareProducts.release.web.request.UpdateReleaseRequest;
 import kurban.softwareProducts.release.web.response.ReleaseResponse;
 import kurban.softwareProducts.releaseCheck.repository.ReleaseCheckRepository;
 import kurban.softwareProducts.softwareProduct.repository.SoftwareProductRepository;
+import kurban.softwareProducts.user.exception.UserNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -35,6 +37,12 @@ public class ReleaseService {
                 .toList();
     }
 
+    public ReleaseResponse getRelease(Long releaseId){
+        return releaseRepository.findById(releaseId)
+                .map(releaseMapper::toReleaseResponse)
+                .orElseThrow(ReleaseNotFoundException::new);
+    }
+
     @Transactional
     public ReleaseResponse createRelease(CreateReleaseRequest request) {
         Release release = releaseMapper.fromCreateReleaseRequest(request);
@@ -45,7 +53,8 @@ public class ReleaseService {
 
     @Transactional
     public ReleaseResponse updateRelease(Long releaseId, UpdateReleaseRequest request) {
-        Release release = releaseRepository.findById(releaseId).get();
+        Release release = releaseRepository.findById(releaseId)
+                .orElseThrow(ReleaseNotFoundException::new);
         releaseMapper.updateFromUpdateReleaseRequest(request, release);
         return releaseMapper.toReleaseResponse(release);
     }

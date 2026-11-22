@@ -21,6 +21,11 @@ public class DevelopmentTaskController {
         return developmentTaskService.getDevelopmentTasks();
     }
 
+    @GetMapping("/{developmentTaskId}")
+    public DevelopmentTaskResponse getDevelopmentTask(@PathVariable Long developmentTaskId){
+        return developmentTaskService.getDevelopmentTask(developmentTaskId);
+    }
+
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
     public DevelopmentTaskResponse createDevelopmentTask(@RequestBody CreateDevelopmentTaskRequest request) {

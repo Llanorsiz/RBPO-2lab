@@ -4,12 +4,15 @@ import kurban.softwareProducts.developmentTask.repository.DevelopmentTaskReposit
 import kurban.softwareProducts.release.model.Release;
 import kurban.softwareProducts.release.repository.ReleaseRepository;
 import kurban.softwareProducts.releaseCheck.repository.ReleaseCheckRepository;
+import kurban.softwareProducts.softwareProduct.exception.SoftwareProductNotFoundException;
 import kurban.softwareProducts.softwareProduct.mapper.SoftwareProductMapper;
 import kurban.softwareProducts.softwareProduct.model.SoftwareProduct;
 import kurban.softwareProducts.softwareProduct.repository.SoftwareProductRepository;
 import kurban.softwareProducts.softwareProduct.web.request.CreateSoftwareProductRequest;
 import kurban.softwareProducts.softwareProduct.web.request.UpdateSoftwareProductRequest;
 import kurban.softwareProducts.softwareProduct.web.response.SoftwareProductResponse;
+import kurban.softwareProducts.user.exception.UserNotFoundException;
+import kurban.softwareProducts.user.web.response.UserResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,6 +36,12 @@ public class SoftwareProductService {
                 .toList();
     }
 
+    public SoftwareProductResponse getSoftwareProducts(Long softwareProductId){
+        return softwareProductRepository.findById(softwareProductId)
+                .map(softwareProductMapper::toSoftwareProductResponse)
+                .orElseThrow(SoftwareProductNotFoundException::new);
+    }
+
     @Transactional
     public SoftwareProductResponse createSoftwareProduct(CreateSoftwareProductRequest request) {
         SoftwareProduct softwareProduct = softwareProductMapper.fromCreateSoftwareProductRequest(request);
@@ -42,7 +51,8 @@ public class SoftwareProductService {
 
     @Transactional
     public SoftwareProductResponse updateSoftwareProduct(Long softwareProductId, UpdateSoftwareProductRequest request) {
-        SoftwareProduct softwareProduct = softwareProductRepository.findById(softwareProductId).get();
+        SoftwareProduct softwareProduct = softwareProductRepository.findById(softwareProductId)
+                .orElseThrow(SoftwareProductNotFoundException::new);
         softwareProductMapper.updateFromUpdateSoftwareProductRequest(request, softwareProduct);
         return softwareProductMapper.toSoftwareProductResponse(softwareProduct);
     }

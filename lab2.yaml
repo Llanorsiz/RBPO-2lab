@@ -1,0 +1,321 @@
+openapi: 3.0.0
+info:
+  title: lab2
+  version: 1.0.0
+  description: ''
+servers:
+  - url: '{{base_url}}'
+paths:
+  /development-tasks/1:
+    put:
+      summary: Update
+      responses: {}
+      tags:
+        - development-tasks
+        - '1'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                productId:
+                  type: integer
+                assigneeUserId:
+                  type: integer
+                releaseId:
+                  type: integer
+                progress:
+                  type: string
+            example:
+              productId: 1
+              assigneeUserId: 1
+              releaseId: 2
+              progress: DONE
+    delete:
+      summary: Delete
+      responses: {}
+      tags:
+        - development-tasks
+        - '1'
+  /development-tasks/4:
+    get:
+      summary: Id
+      responses: {}
+      tags:
+        - development-tasks
+        - '1'
+  /development-tasks:
+    get:
+      summary: All
+      responses: {}
+      tags:
+        - development-tasks
+    post:
+      summary: Create
+      responses: {}
+      tags:
+        - development-tasks
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                productId:
+                  type: integer
+                assigneeUserId:
+                  type: integer
+                releaseId:
+                  type: integer
+                progress:
+                  type: string
+            example:
+              productId: 1
+              assigneeUserId: 1
+              releaseId: 2
+              progress: TO_DO
+  /releases/1:
+    put:
+      summary: Update
+      responses: {}
+      tags:
+        - releases
+        - '1'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                number:
+                  type: string
+                  format: utc-millisec
+                productId:
+                  type: integer
+                status:
+                  type: string
+            example:
+              number: '2.0'
+              productId: 1
+              status: DEPRECATED
+    delete:
+      summary: Delete
+      responses: {}
+      tags:
+        - releases
+        - '1'
+  /releases/2:
+    get:
+      summary: Id
+      responses: {}
+      tags:
+        - releases
+        - '1'
+  /releases:
+    get:
+      summary: All
+      responses: {}
+      tags:
+        - releases
+    post:
+      summary: Create
+      responses: {}
+      tags:
+        - releases
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                number:
+                  type: string
+                  format: utc-millisec
+                productId:
+                  type: integer
+                status:
+                  type: string
+            example:
+              number: '1.0'
+              productId: 1
+              status: ACTUAL
+  /release-checks/1:
+    put:
+      summary: Update
+      responses: {}
+      tags:
+        - release-checks
+        - '1'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                releaseId:
+                  type: integer
+                name:
+                  type: string
+                type:
+                  type: string
+                result:
+                  type: string
+            example:
+              releaseId: 2
+              name: work
+              type: REQUIRED
+              result: Zavoz
+    delete:
+      summary: Delete
+      responses: {}
+      tags:
+        - release-checks
+        - '1'
+    get:
+      summary: Id
+      responses: {}
+      tags:
+        - release-checks
+        - '1'
+  /release-checks:
+    get:
+      summary: All
+      responses: {}
+      tags:
+        - release-checks
+    post:
+      summary: Create
+      responses: {}
+      tags:
+        - release-checks
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                releaseId:
+                  type: integer
+                name:
+                  type: string
+                type:
+                  type: string
+                result:
+                  type: string
+            example:
+              releaseId: 2
+              name: tests
+              type: REQUIRED
+              result: Okay
+  /software-products/1:
+    put:
+      summary: Update
+      responses: {}
+      tags:
+        - software-products
+        - '1'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                responsibleUserId:
+                  type: integer
+                currentReleaseId:
+                  type: integer
+            example:
+              name: MTUCI LMS 2.0
+              responsibleUserId: 1
+              currentReleaseId: 2
+    delete:
+      summary: Delete
+      responses: {}
+      tags:
+        - software-products
+        - '1'
+    get:
+      summary: Id
+      responses: {}
+      tags:
+        - software-products
+        - '1'
+  /software-products:
+    get:
+      summary: All
+      responses: {}
+      tags:
+        - software-products
+    post:
+      summary: Create
+      responses: {}
+      tags:
+        - software-products
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                responsibleUserId:
+                  type: integer
+            example:
+              name: Mtuci
+              responsibleUserId: 1
+  /users/5:
+    put:
+      summary: Update
+      responses: {}
+      tags:
+        - users
+        - '5'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+            example:
+              username: VSE
+  /users/11:
+    delete:
+      summary: Delete
+      responses: {}
+      tags:
+        - users
+        - '5'
+  /users/1:
+    get:
+      summary: Id
+      responses: {}
+      tags:
+        - users
+        - '5'
+  /users:
+    post:
+      summary: Create
+      responses: {}
+      tags:
+        - users
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+            example:
+              username: Kurban12355
+    get:
+      summary: All
+      responses: {}
+      tags:
+        - users

@@ -21,6 +21,11 @@ public class UserController {
         return userService.getUsers();
     }
 
+    @GetMapping("/{userId}")
+    public UserResponse getUser(@PathVariable Long userId){
+        return userService.getUser(userId);
+    }
+
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
     public UserResponse createUser(@RequestBody CreateUserRequest request) {

@@ -1,11 +1,14 @@
 package kurban.softwareProducts.releaseCheck.service;
 
+import kurban.softwareProducts.releaseCheck.exception.ReleaseCheckNotFoundException;
 import kurban.softwareProducts.releaseCheck.mapper.ReleaseCheckMapper;
 import kurban.softwareProducts.releaseCheck.model.ReleaseCheck;
 import kurban.softwareProducts.releaseCheck.repository.ReleaseCheckRepository;
 import kurban.softwareProducts.releaseCheck.web.request.CreateReleaseCheckRequest;
 import kurban.softwareProducts.releaseCheck.web.request.UpdateReleaseCheckRequest;
 import kurban.softwareProducts.releaseCheck.web.response.ReleaseCheckResponse;
+import kurban.softwareProducts.user.exception.UserNotFoundException;
+import kurban.softwareProducts.user.web.response.UserResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,6 +29,12 @@ public class ReleaseCheckService {
                 .toList();
     }
 
+    public ReleaseCheckResponse getReleaseCheck(Long releaseCheckId){
+        return releaseCheckRepository.findById(releaseCheckId)
+                .map(releaseCheckMapper::toReleaseCheckResponse)
+                .orElseThrow(ReleaseCheckNotFoundException::new);
+    }
+
     @Transactional
     public ReleaseCheckResponse createReleaseCheck(CreateReleaseCheckRequest request) {
         ReleaseCheck releaseCheck = releaseCheckMapper.fromCreateReleaseCheckRequest(request);
@@ -35,7 +44,8 @@ public class ReleaseCheckService {
 
     @Transactional
     public ReleaseCheckResponse updateReleaseCheck(Long releaseCheckId, UpdateReleaseCheckRequest request) {
-        ReleaseCheck releaseCheck = releaseCheckRepository.findById(releaseCheckId).get();
+        ReleaseCheck releaseCheck = releaseCheckRepository.findById(releaseCheckId)
+                .orElseThrow(ReleaseCheckNotFoundException::new);
         releaseCheckMapper.updateFromUpdateReleaseCheckRequest(request, releaseCheck);
         return releaseCheckMapper.toReleaseCheckResponse(releaseCheck);
     }
